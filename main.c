@@ -9,7 +9,6 @@ unsigned char *ConvertToSmall(unsigned char*text)
   while (text[dlina] != '\0')
         {dlina += 1;}
 
-
   unsigned char *result = (unsigned char*)malloc(dlina + 1); // выделяю память под результирующую строку
   int count = 0;
   size_t newc = 0;
@@ -43,9 +42,6 @@ unsigned char *ConvertToSmall(unsigned char*text)
   result[newc] = '\0';
   return result;
 }
-
-
-
 
 unsigned char *ConvertSMallto(unsigned char*text)
 {
@@ -101,6 +97,15 @@ unsigned char *ConvertSMallto(unsigned char*text)
 
 int main()
 {
+
+  FILE*ptrFile = NULL;
+  FILE *ptrCopyF = NULL;
+  char el;
+  ptrFile = fopen("first.txt","rb");
+  if (ptrFile == NULL){return 0;}
+
+
+
   unsigned char text[1000] = "zaaaaaaaffff";
   unsigned char *ptr = ConvertToSmall(text);
   int i =0;
@@ -115,6 +120,7 @@ int main()
     printf("%c",ptr2[i]);
     printf("\n");
     i++;}
+  fclose(ptrFile);
   free(ptr);
   free(ptr2);
   return 0;
