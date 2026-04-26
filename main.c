@@ -1,94 +1,83 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-unsigned char *ConvertToSmall(unsigned char*text)
+void ConvertToSmall(FILE *text)
 {
-  if (text==NULL){return NULL;}
+  if (text!=NULL){
 
-  int dlina = 0;
-  while (text[dlina] != '\0')
-        {dlina += 1;}
-
-  unsigned char *result = (unsigned char*)malloc(dlina + 1); // выделяю память под результирующую строку
+  char el;
+  unsigned buf1[8];
   int count = 0;
-  size_t newc = 0;
-  int block = dlina / 8;
-  int blocks = 0;
-  unsigned char simvol = 0;
-  int maska=7 ;
-  while (blocks < block)
-  {
-    simvol = text[count];
 
-    int i = 0;
-    while (i < 7){
-      result[newc] = (text[count+i+1] | ( (simvol >> (7 - maska))&1 )<<7);
-      newc++;
-      maska--;
-      i++;
+  unsigned char result;
+
+  while (fscanf(text,"%c",&el)!= -1)
+  {
+    buf1[count] = el;
+    count++;
+    if(count == 8){
+      int i = 0;
+      while (i < 7){
+        result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
+        printf("%c",result);
+        i++;
+        }
+      count = 0;
       }
-
-    count += 8;
-    blocks += 1;
-    }
-
-
-  while (count < dlina){
-    result[newc] = text[count];
-    count++;
-    newc++;}
-
-
-  result[newc] = '\0';
-  return result;
-}
-
-unsigned char *ConvertSMallto(unsigned char*text)
-{
-  if (text==NULL){return NULL;}
-
-  int dlina = 0;
-  while (text[dlina] != '\0')
-        {dlina += 1;}
-  int block = dlina / 7;
-
-
-
-  unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
-  int count = 0;
-  size_t newc = 0;
-  int blocks = 0;
-  unsigned char maska = 0;
-  unsigned char mask = 0;
-  mask = (mask << 7);
-  while (blocks < block)
-  {
-    maska = 0;
-    int i = 0;
-    while (i < 7){
-          maska = maska | ((text[count+i]>>7)&1) << i;
-          i++;}
-    result[newc] = maska;
-    newc++;
-
-    i = 0;
-    while(i < 7){
-      result[newc] = (text[count]& ~mask);
-      newc++;
-      i++;}
-    count += 7;
-    blocks += 1;
 }
 
 
-  while (count < dlina){
-    result[newc] = text[count];
-    count++;
-    newc++;}
-
-  result[newc] = '\0';
-  return result;
+  if (count  > 0){
+    for(int i=0 ; i < count; i++){
+      printf("%c",buf1[i]);}}}
 }
+
+void ConvertSMallto(unsigned char*text)
+// {
+//   if (text==NULL){return NULL;}
+
+//   int dlina = 0;
+//   while (text[dlina] != '\0')
+//         {dlina += 1;}
+//   int block = dlina / 7;
+
+
+
+//   unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
+//   int count = 0;
+//   size_t newc = 0;
+//   int blocks = 0;
+//   unsigned char maska = 0;
+//   unsigned char mask = 0;
+//   mask = (mask << 7);
+//   while (blocks < block)
+//   {
+//     maska = 0;
+//     int i = 0;
+//     while (i < 7){
+//           maska = maska | ((text[count+i]>>7)&1) << i;
+//           i++;}
+//     result[newc] = maska;
+//     newc++;
+
+//     i = 0;
+//     while(i < 7){
+//       result[newc] = (text[count]& ~mask);
+//       newc++;
+//       i++;}
+//     count += 7;
+//     blocks += 1;
+// }
+
+
+//   while (count < dlina){
+//     result[newc] = text[count];
+//     count++;
+//     newc++;}
+
+//   result[newc] = '\0';
+//   return result;
+// }
 
 
 
@@ -98,30 +87,16 @@ unsigned char *ConvertSMallto(unsigned char*text)
 int main()
 {
 
-  FILE*ptrFile = NULL;
-  FILE *ptrCopyF = NULL;
-  char el;
-  ptrFile = fopen("first.txt","rb");
-  if (ptrFile == NULL){return 0;}
+  FILE*ptr = NULL;
+  FILE*ptr2 = NULL;
+  ptr= fopen("first.txt","rb");
+  ptr2 = fopen("second.txt","wb");
+  if (ptr == NULL){return 0;}
+
+  ConvertToSmall(ptr);
 
 
 
-  unsigned char text[1000] = "zaaaaaaaffff";
-  unsigned char *ptr = ConvertToSmall(text);
-  int i =0;
-  while (ptr[i] != '\0'){
-    printf("%c",ptr[i]);
-    printf("\n");
-    i++;}
-  i =0;
-  printf("\n");
-  unsigned char *ptr2 = ConvertSMallto(ptr);
-  while (ptr2[i] != '\0'){
-    printf("%c",ptr2[i]);
-    printf("\n");
-    i++;}
-  fclose(ptrFile);
-  free(ptr);
-  free(ptr2);
+  fclose(ptr);
   return 0;
 }
