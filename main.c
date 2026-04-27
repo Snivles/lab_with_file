@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-void ConvertToSmall(FILE *text)
+void ConvertToSmall(FILE *text , FILE*second)
 {
-  if (text!=NULL){
+  if (text!=NULL && second != NULL){
 
   char el;
-  unsigned buf1[8];
+  unsigned char buf1[8];
   int count = 0;
 
   unsigned char result;
@@ -19,7 +19,7 @@ void ConvertToSmall(FILE *text)
       int i = 0;
       while (i < 7){
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
-        printf("%c",result);
+        fprintf(second, "%c",result);
         i++;
         }
       count = 0;
@@ -29,20 +29,36 @@ void ConvertToSmall(FILE *text)
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
-      printf("%c",buf1[i]);}}}
+      fprintf(second, "%c",buf1[i]);
+}}}}
+
+
+
+
+
+void ConverttoNorm(FILE *text , FILE*second){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
+if (text!=NULL && second != NULL){
+  char el;
+  unsigned char buf1[7];
+  int count = 0;
+  unsigned char mask = 1;
+  while (fscanf(text,"%c",&el)!= -1){
+      buf1[count] = el;
+      count++;
+      if (count == 7){
+          unsigned char res[8];
+          int i = 0;
+          while (i < 7){
+                res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;}
+          i = 0;
+          while (i < 7){
+                res[i+1] = buf1[i] & ~(mask << 7);}
+          for(i = 0; i < 8; i++){
+                fprintf(second,"c",res[i]);}
+      }
+    }
+  }
 }
-
-void ConvertSMallto(unsigned char*text)
-// {
-//   if (text==NULL){return NULL;}
-
-//   int dlina = 0;
-//   while (text[dlina] != '\0')
-//         {dlina += 1;}
-//   int block = dlina / 7;
-
-
-
 //   unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
 //   int count = 0;
 //   size_t newc = 0;
@@ -89,14 +105,15 @@ int main()
 
   FILE*ptr = NULL;
   FILE*ptr2 = NULL;
-  ptr= fopen("first.txt","rb");
-  ptr2 = fopen("second.txt","wb");
-  if (ptr == NULL){return 0;}
+  ptr= fopen("first.txt","r");
+  ptr2 = fopen("second.txt","w");
+  if (ptr != NULL && ptr2 != NULL){
 
-  ConvertToSmall(ptr);
+  ConvertToSmall(ptr,ptr2);
 
-
-
+  ConverttoNorm(ptr2,ptr);
   fclose(ptr);
+  fclose(ptr2);
   return 0;
+}
 }
