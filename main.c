@@ -7,7 +7,7 @@
 //тест для Abstract. The present paper upholds the problem of quoting as a form of dialogism in postmodern text. Methodologically, the approach, proposed by the authors, integrates two theories. Firstly, it draws on Van Dijk
 // 213 Б , в зашифрованном варианте 187 Б (верное шифрование)
 // asdasdsadП - 11 байт(10 байт для латиницы и +1 для кириллицы) на выходе зашифрованный код имеет 8 байт а дешиф 9 байт( дошли до П и стоп)
-void Encryption(FILE *readthis , FILE*writein)
+int Encryption(FILE *readthis , FILE*writein)
 {
   if (readthis!=NULL && writein != NULL){
 
@@ -39,13 +39,16 @@ void Encryption(FILE *readthis , FILE*writein)
   if (count  > 0){
     for(int i=0 ; i < count; i++){
       fprintf(writein, "%c",buf1[i]);
-}}}}
+
+  return count;}}}
+return -1;
+}
 
 
 
 
 
-void Dencryption(FILE *readthis , FILE*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
+int Dencryption(FILE *readthis , FILE*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
 if (readthis!=NULL && writein != NULL){
   char el;
   unsigned char buf1[7];
@@ -76,7 +79,10 @@ if (readthis!=NULL && writein != NULL){
   if (count  > 0){
     for(int i=0 ; i < count; i++){
       fprintf(writein, "%c",buf1[i]);
-}}}}
+}}
+  return count;}
+
+}
 
 //   unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
 //   int count = 0;
@@ -124,19 +130,28 @@ int main()
 
   FILE*ptr = NULL;
   FILE*ptr2 = NULL;
-  ptr= fopen("first.txt","r");
-  ptr2 = fopen("second.txt","w");
+  ptr= fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt","r");
+  ptr2 = fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/second.txt","w");
   if (ptr != NULL && ptr2 != NULL){
 
-  Encryption(ptr,ptr2);
+  if(Encryption(ptr,ptr2)>=0){
+    printf("Correct encryption");
+}
+  else{printf("Wrong encryption");
+      return 0;}
   fclose(ptr);
   fclose(ptr2);}
 
-  ptr= fopen("second.txt","r");
-  ptr2 = fopen("first.txt","w");
+  ptr= fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/second.txt","r");
+  ptr2 = fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt","w");
   if (ptr != NULL && ptr2 != NULL){
 
-  Dencryption(ptr,ptr2);
+  if (Dencryption(ptr,ptr2) >=0){
+    printf("Correct Dencryption");
+}
+  else{printf("Wrong Dencryption");
+      return 0;}
+
   fclose(ptr);
   fclose(ptr2);}
   return 0;
