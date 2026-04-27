@@ -4,6 +4,9 @@
 //тест для first.txt - 15 Байт : second.txt 14-Байт , после обратного получаем 15 (те же самые)
 //тест для first.txt - 26 Байт : second.txt 23-Байт , после обратного получаем 26 (те же самые)
 //тест для first.txt - 0 Байт : second.txt 0-Байт , после обратного получаем 0 (те же самые)
+//тест для Abstract. The present paper upholds the problem of quoting as a form of dialogism in postmodern text. Methodologically, the approach, proposed by the authors, integrates two theories. Firstly, it draws on Van Dijk
+// 213 Б , в зашифрованном варианте 187 Б (верное шифрование)
+// asdasdsadП - 11 байт(10 байт для латиницы и +1 для кириллицы) на выходе зашифрованный код имеет 8 байт а дешиф 9 байт( дошли до П и стоп)
 void Encryption(FILE *readthis , FILE*writein)
 {
   if (readthis!=NULL && writein != NULL){
@@ -17,7 +20,9 @@ void Encryption(FILE *readthis , FILE*writein)
   while (fscanf(readthis,"%c",&el)!= -1)
   {
     buf1[count] = el;
-    if(buf1[count] > 128){break;}
+    if(buf1[count] >= 128){
+      break;
+}
     count++;
     if(count == 8){
       int i = 0;
