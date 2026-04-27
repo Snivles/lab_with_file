@@ -130,7 +130,7 @@ int main()
 
   FILE*ptr = NULL;
   FILE*ptr2 = NULL;
-  ptr= fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt","r");
+  //ptr= fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt","r");
   ptr2 = fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/second.txt","w");
   if (ptr != NULL && ptr2 != NULL){
 
@@ -141,7 +141,8 @@ int main()
       return 0;}
   fclose(ptr);
   fclose(ptr2);}
-
+  else{printf("ERROR WITH NUKK"); return 0;}
+  printf("\n");
   ptr= fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/second.txt","r");
   ptr2 = fopen("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt","w");
   if (ptr != NULL && ptr2 != NULL){
@@ -154,5 +155,6 @@ int main()
 
   fclose(ptr);
   fclose(ptr2);}
-  return 0;
-}
+  printf("ERROR WITH NUKK"); return 0;
+  return 0;}
+
