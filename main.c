@@ -13,7 +13,7 @@ bool Compress(char * readthis , char*writein)
 {
   FILE*in = fopen(readthis,"r");
   FILE*out = fopen(writein,"w");
-  if (readthis==NULL || writein == NULL){return false;}
+  if (in==NULL || out == NULL){return false;}
 
   char el;
   unsigned char buf1[8];
@@ -24,25 +24,24 @@ bool Compress(char * readthis , char*writein)
   while (fscanf(in,"%c",&el)!= -1)
   {
     buf1[count] = el;
-    if(buf1[count] >= 128){
-      break;
-}
+    if(buf1[count] <= 127){
+
     count++;
     if(count == 8){
       int i = 0;
       while (i < 7){
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
-        fprintf(out, "%c",result);
+        if(fprintf(out, "%c",result)<0){return false;}
         i++;
         }
       count = 0;
       }
-}
+}}
 
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
-      fprintf(in, "%c",buf1[i]);
+      if((fprintf(out, "%c",buf1[i]))<0){return false;}
 
   }
 }
@@ -53,9 +52,9 @@ return true;}
 
 
 bool DeCompress(char *readthis , char*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
-  FILE *in= fopen(readthis,"r");
-  FILE*out  = fopen(writein,"w");
-if (readthis==NULL || writein == NULL){ return false;}
+  FILE *in= fopen(readthis,"w");
+  FILE*out  = fopen(writein,"r");
+if (in==NULL || out == NULL){ return false;}
   char el;
   unsigned char buf1[7];
   int count = 0;
@@ -70,21 +69,18 @@ if (readthis==NULL || writein == NULL){ return false;}
           int i = 0;
           while (i < 7){
                 res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
-                i++;}
-          i = 0;
-          while (i < 7){
                 res[i+1] = buf1[i] & ~(mask << 7);
                 i++;}
           for(i = 0; i < 8; i++){
-                if (i == 0 && res[i] == 0){continue;}
-                fprintf(out,"%c",res[i]);}
+                if (!(i == 0 && res[i] == 0)){
+                if (fprintf(out,"%c",res[i])<0){return false;} }}
           count = 0;
         }
     }
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
-      fprintf(in, "%c",buf1[i]);
+      if (fprintf(out, "%c",buf1[i]) < 0){return false;}
 }}
 
 return true;}
@@ -105,23 +101,15 @@ int main()
 }
   else{printf("Wrong Encryption");
       return 0;}
-  fclose(ptr);
-  fclose(ptr2);}
-  else{printf("ERROR WITH NULL"); return 0;}
   printf("\n");
 
 
-  if (ptr != NULL && ptr2 != NULL){
 
-  if (DeCompress(ptr,ptr2)){
+  if (DeCompress(ptr2,ptr)){
     printf("Correct Dencryption");
 }
   else{printf("Wrong Dencryption");
-      fclose(ptr);
-      fclose(ptr2);
       return 0;}
 
-  fclose(ptr);
-  fclose(ptr2);}
-  else{printf("ERROR WITH NULL"); return 0;}}
+  return 0;}
 
