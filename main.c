@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-void ConvertToSmall(FILE *text , FILE*second)
+//тест для first.txt - 15 Байт : second.txt 14-Байт , после обратного получаем 15 (те же самые)
+//
+void Encryption(FILE *readthis , FILE*writein)
 {
-  if (text!=NULL && second != NULL){
+  if (readthis!=NULL && writein != NULL){
 
   char el;
   unsigned char buf1[8];
@@ -11,7 +13,7 @@ void ConvertToSmall(FILE *text , FILE*second)
 
   unsigned char result;
 
-  while (fscanf(text,"%c",&el)!= -1)
+  while (fscanf(readthis,"%c",&el)!= -1)
   {
     buf1[count] = el;
     count++;
@@ -19,7 +21,7 @@ void ConvertToSmall(FILE *text , FILE*second)
       int i = 0;
       while (i < 7){
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
-        fprintf(second, "%c",result);
+        fprintf(writein, "%c",result);
         i++;
         }
       count = 0;
@@ -29,23 +31,22 @@ void ConvertToSmall(FILE *text , FILE*second)
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
-      fprintf(second, "%c",buf1[i]);
+      fprintf(writein, "%c",buf1[i]);
 }}}}
 
 
 
 
 
-void ConverttoNorm(FILE *text , FILE*second){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
-if (text!=NULL && second != NULL){
+void Dencryption(FILE *readthis , FILE*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
+if (readthis!=NULL && writein != NULL){
   char el;
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
 
-  int sz = 0;
-  while (fscanf(text,"%c",&el)!= -1){
-      sz++;
+
+  while (fscanf(readthis,"%c",&el)!= -1){
       buf1[count] = el;
       count++;
       if (count == 7){
@@ -60,14 +61,14 @@ if (text!=NULL && second != NULL){
                 i++;}
           for(i = 0; i < 8; i++){
                 if (i == 0 && res[i] == 0){continue;}
-                fprintf(second,"%c",res[i]);}
+                fprintf(writein,"%c",res[i]);}
           count = 0;
         }
     }
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
-      fprintf(second, "%c",buf1[i]);
+      fprintf(writein, "%c",buf1[i]);
 }}}}
 
 //   unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
@@ -120,7 +121,7 @@ int main()
   ptr2 = fopen("second.txt","w");
   if (ptr != NULL && ptr2 != NULL){
 
-  ConvertToSmall(ptr,ptr2);
+  Encryption(ptr,ptr2);
   fclose(ptr);
   fclose(ptr2);}
 
@@ -128,7 +129,7 @@ int main()
   ptr2 = fopen("first.txt","w");
   if (ptr != NULL && ptr2 != NULL){
 
-  ConverttoNorm(ptr,ptr2);
+  Dencryption(ptr,ptr2);
   fclose(ptr);
   fclose(ptr2);}
   return 0;
