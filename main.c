@@ -42,23 +42,34 @@ if (text!=NULL && second != NULL){
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
+
+  int sz = 0;
   while (fscanf(text,"%c",&el)!= -1){
+      sz++;
       buf1[count] = el;
       count++;
       if (count == 7){
-          unsigned char res[8];
+          unsigned char res[8] = {0};
           int i = 0;
           while (i < 7){
-                res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;}
+                res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
+                i++;}
           i = 0;
           while (i < 7){
-                res[i+1] = buf1[i] & ~(mask << 7);}
+                res[i+1] = buf1[i] & ~(mask << 7);
+                i++;}
           for(i = 0; i < 8; i++){
-                fprintf(second,"c",res[i]);}
-      }
+                if (i == 0 && res[i] == 0){continue;}
+                fprintf(second,"%c",res[i]);}
+          count = 0;
+        }
     }
-  }
-}
+
+  if (count  > 0){
+    for(int i=0 ; i < count; i++){
+      fprintf(second, "%c",buf1[i]);
+}}}}
+
 //   unsigned char *result = (unsigned char*)malloc((dlina + block) + 1); // выделяю память под результирующую строку
 //   int count = 0;
 //   size_t newc = 0;
@@ -110,10 +121,15 @@ int main()
   if (ptr != NULL && ptr2 != NULL){
 
   ConvertToSmall(ptr,ptr2);
-
-  ConverttoNorm(ptr2,ptr);
   fclose(ptr);
-  fclose(ptr2);
+  fclose(ptr2);}
+
+  ptr= fopen("second.txt","r");
+  ptr2 = fopen("first.txt","w");
+  if (ptr != NULL && ptr2 != NULL){
+
+  ConverttoNorm(ptr,ptr2);
+  fclose(ptr);
+  fclose(ptr2);}
   return 0;
-}
 }
