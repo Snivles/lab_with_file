@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 //тест для first.txt - 15 Байт : second.txt 14-Байт , после обратного получаем 15 (те же самые)
-//
+//тест для first.txt - 26 Байт : second.txt 23-Байт , после обратного получаем 26 (те же самые)
+//тест для first.txt - 0 Байт : second.txt 0-Байт , после обратного получаем 0 (те же самые)
 void Encryption(FILE *readthis , FILE*writein)
 {
   if (readthis!=NULL && writein != NULL){
@@ -16,6 +17,7 @@ void Encryption(FILE *readthis , FILE*writein)
   while (fscanf(readthis,"%c",&el)!= -1)
   {
     buf1[count] = el;
+    if(buf1[count] > 128){break;}
     count++;
     if(count == 8){
       int i = 0;
