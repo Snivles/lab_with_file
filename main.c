@@ -68,8 +68,8 @@ return true;}
 
 
 bool DeCompress(char *readthis , char*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
-  FILE *in= fopen(readthis,"w");
-  FILE*out  = fopen(writein,"r");
+  FILE *in= fopen(readthis,"r");
+  FILE*out  = fopen(writein,"w");
 if (in==NULL || out == NULL){
       return false;}
   char el;
