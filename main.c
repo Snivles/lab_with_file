@@ -36,7 +36,8 @@ bool Compress(char * readthis , char*writein)
     if(buf1[count] > 127){
         fclose(in);
         fclose(out);
-        return false;}
+        if(remove(writein)==0){
+        return false;}}
 
     count++;
     if(count == 8){
@@ -120,6 +121,8 @@ int main()
     printf("Correct Compress");
 }
   else{printf("Wrong Compress");
+      printf("\n");
+      printf("remove file");
       return 0;}
   printf("\n");
 
