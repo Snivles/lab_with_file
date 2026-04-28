@@ -59,6 +59,8 @@ bool Compress(char * readthis , char*writein)
 
   }
 }
+  fclose(in);
+  fclose(out);
 return true;}
 
 
@@ -99,7 +101,8 @@ if (in==NULL || out == NULL){
       if (fprintf(out, "%c",buf1[i]) < 0){
             return false;}
 }}
-
+  fclose(in);
+  fclose(out);
 return true;}
 
 
