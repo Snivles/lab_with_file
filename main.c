@@ -121,8 +121,6 @@ int main()
     printf("Correct Compress");
 }
   else{printf("Wrong Compress");
-      printf("\n");
-      printf("remove file");
       return 0;}
   printf("\n");
 
