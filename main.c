@@ -14,6 +14,7 @@ bool Compress(char * readthis , char*writein)
   char el;
   unsigned char buf1[8];
   int count = 0;
+  bool flag = true;
 
   unsigned char result;
 
@@ -33,20 +34,28 @@ bool Compress(char * readthis , char*writein)
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
         if(fprintf(out, "%c",result)<0){
             return false;}
+        flag = false;
         i++;
         }
       count = 0;
       }
 }
 
-
   if (count  > 0){
     for(int i=0 ; i < count; i++){
+      flag = false;
       if((fprintf(out, "%c",buf1[i]))<0){
           return false;}
 
   }
 }
+
+  if (flag == true){
+        fclose(in);
+        fclose(out);
+        if(remove(writein)==0){
+        return false;}}
+
   fclose(in);
   fclose(out);
 return true;}
