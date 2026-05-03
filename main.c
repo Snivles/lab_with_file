@@ -23,9 +23,11 @@ bool Compress(char * readthis , char*writein)
     buf1[count] = el;
     if(buf1[count] > 127 || buf1[count] == 0){
         fclose(in);
-        fclose(out);
-        if(remove(writein)==0){
-        return false;}}
+        if(fclose(out) != 0){
+          remove(writein);
+          return false;}
+        remove(writein);
+        return false;}
 
     count++;
     if(count == 8){
