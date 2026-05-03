@@ -21,7 +21,7 @@ bool Compress(char * readthis , char*writein)
   while (fscanf(in,"%c",&el)!= -1)
   {
     buf1[count] = el;
-    if(buf1[count] > 127){
+    if(buf1[count] > 127 || buf1[count] == 0){
         fclose(in);
         fclose(out);
         if(remove(writein)==0){
