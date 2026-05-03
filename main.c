@@ -57,7 +57,9 @@ bool Compress(char * readthis , char*writein)
         return false;}}
 
   fclose(in);
-  fclose(out);
+  if(fclose(out) != 0){
+    remove(writein);
+    return false;}
 return true;}
 
 
@@ -99,7 +101,9 @@ if (in==NULL || out == NULL){
             return false;}
 }}
   fclose(in);
-  fclose(out);
+  if(fclose(out) != 0){
+    remove(writein);
+    return false;}
 return true;}
 
 
