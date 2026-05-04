@@ -129,7 +129,7 @@ int main()
   printf("\n");
 
 
-  result = Compress(ptr,ptr2);
+  result = DeCompress(ptr,ptr2);
   if (result == 1){
     printf("Correct DeCompress");
 }
