@@ -3,13 +3,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-
-bool Compress(char * readthis , char*writein)
+int Compress(char * readthis , char*writein)
 {
   FILE*in = fopen(readthis,"r");
   FILE*out = fopen(writein,"w");
   if (in==NULL || out == NULL){
-      return false;}
+      return 2;}
 
   char el;
   unsigned char buf1[8];
@@ -24,10 +23,11 @@ bool Compress(char * readthis , char*writein)
     if(buf1[count] > 127 || buf1[count] == 0){
         fclose(in);
         if(fclose(out) != 0){
-          remove(writein);
-          return false;}
+          if(remove(writein)==0){
+          return 5;}
+          return 6;}
         remove(writein);
-        return false;}
+        return 4;}
 
     count++;
     if(count == 8){
@@ -35,7 +35,7 @@ bool Compress(char * readthis , char*writein)
       while (i < 7){
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
         if(fprintf(out, "%c",result)<0){
-            return false;}
+            return 3;}
         flag = false;
         i++;
         }
@@ -47,7 +47,7 @@ bool Compress(char * readthis , char*writein)
     for(int i=0 ; i < count; i++){
       flag = false;
       if((fprintf(out, "%c",buf1[i]))<0){
-          return false;}
+          return 3;}
 
   }
 }
@@ -55,24 +55,24 @@ bool Compress(char * readthis , char*writein)
   if (flag == true){
         fclose(in);
         fclose(out);
-        if(remove(writein)==0){
-        return false;}}
+        remove(writein);
+        return 0;}
 
   fclose(in);
   if(fclose(out) != 0){
     remove(writein);
-    return false;}
-return true;}
+    return 5;}
+return 1;}
 
 
 
 
 
-bool DeCompress(char *readthis , char*writein){ // текст это файл ЗАшифрованный 2 это файл куда писать расшифровку
+int DeCompress(char *readthis , char*writein){
   FILE *in= fopen(readthis,"r");
   FILE*out  = fopen(writein,"w");
 if (in==NULL || out == NULL){
-      return false;}
+      return 2;}
   char el;
   unsigned char buf1[7];
   int count = 0;
@@ -92,7 +92,7 @@ if (in==NULL || out == NULL){
           for(i = 0; i < 8; i++){
                 if (!(i == 0 && res[i] == 0)){
                 if (fprintf(out,"%c",res[i])<0){
-                      return false;} }}
+                      return 3;} }}
           count = 0;
         }
     }
@@ -100,13 +100,14 @@ if (in==NULL || out == NULL){
   if (count  > 0){
     for(int i=0 ; i < count; i++){
       if (fprintf(out, "%c",buf1[i]) < 0){
-            return false;}
+            return 3;}
 }}
   fclose(in);
   if(fclose(out) != 0){
-    remove(writein);
-    return false;}
-return true;}
+    if(remove(writein)==0){
+    return 5;}
+  return 6;}
+return 1;}
 
 
 
@@ -117,21 +118,22 @@ return true;}
 int main()
 {
 
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/first.txt");
-  char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/build/unknown-Debug/second.txt");
-  if(Compress(ptr,ptr2)){
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt");
+  char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
+  int result = Compress(ptr,ptr2);
+  if(result ==1){
     printf("Correct Compress");
 }
-  else{printf("Wrong Compress");
+  else{printf("Error number: %d",result);
       return 0;}
   printf("\n");
 
 
-
-  if (DeCompress(ptr2,ptr)){
+  result = Compress(ptr,ptr2);
+  if (result == 1){
     printf("Correct DeCompress");
 }
-  else{printf("Wrong DeCompress");
+  else{printf("Error number: %d",result);
       return 0;}
 
   return 0;}
