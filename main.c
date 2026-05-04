@@ -117,8 +117,13 @@ return 1;}
 
 int main()
 {
-
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   int result = Compress(ptr,ptr2);
   if(result ==1){
@@ -129,7 +134,7 @@ int main()
   printf("\n");
 
 
-  result = Compress(ptr,ptr2);
+  result = DeCompress(ptr2,ptr);
   if (result == 1){
     printf("Correct DeCompress");
 }
