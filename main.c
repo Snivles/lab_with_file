@@ -16,7 +16,7 @@ FILE*out = fopen(writein,"w");
       if(in){
         fclose(in);
         return 2;}}
-
+  unsigned char mark = '~';
   unsigned char el;
   unsigned char buf1[8];
   int count = 0;
@@ -27,7 +27,7 @@ FILE*out = fopen(writein,"w");
   while (fscanf(in,"%c",&el)!= -1)
   {
     buf1[count] = el;
-    if(buf1[count] > 127 || buf1[count] == 0){
+    if(buf1[count] > 127){
         fclose(in);
         if(fclose(out) != 0){
           if(remove(writein)==0){
@@ -51,10 +51,19 @@ FILE*out = fopen(writein,"w");
 }
 
   if (count  > 0){
+    flag = false;
+    if (count == 7){
+        buf1[7] = mark;
+        for(int i =0; i< 7;i++){
+        result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
+        if(fprintf(out, "%c",result)<0){
+            return 3;}
+            }}
+    else{
     for(int i=0 ; i < count; i++){
       flag = false;
       if((fprintf(out, "%c",buf1[i]))<0){
-          return 3;}
+          return 3;}}
 
   }
 }
@@ -91,7 +100,7 @@ FILE*out = fopen(writein,"w");
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
-
+  unsigned char mark = '~';
 
   while (fscanf(in,"%c",&el)!= -1){
       buf1[count] = el;
@@ -103,10 +112,18 @@ FILE*out = fopen(writein,"w");
                 res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
                 res[i+1] = buf1[i] & ~(mask << 7);
                 i++;}
+          if (res[7]== mark){
+              for(i = 0;i<7; i++){
+                  if(fprintf(out,"%c",res[i])<0){
+                      return 3;}}}
+
+          else{
+
+
           for(i = 0; i < 8; i++){
                 if (!(i == 0 && res[i] == 0)){
                 if (fprintf(out,"%c",res[i])<0){
-                      return 3;} }}
+                      return 3;} }}}
           count = 0;
         }
     }
@@ -133,11 +150,11 @@ int main()
 {
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   int result = Compress(ptr,ptr2);
   if(result ==1){

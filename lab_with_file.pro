@@ -7,4 +7,5 @@ SOURCES += \
         main.c
 
 DISTFILES += \
+    file.txt \
     pystota.txt
