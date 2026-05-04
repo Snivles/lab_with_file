@@ -5,12 +5,19 @@
 
 int Compress(char * readthis , char*writein)
 {
-  FILE*in = fopen(readthis,"r");
-  FILE*out = fopen(writein,"w");
-  if (in==NULL || out == NULL){
+ if (readthis == NULL || writein == NULL){return 2;}
+
+FILE*in = fopen(readthis,"r");
+if (in == NULL){
       return 2;}
 
-  char el;
+FILE*out = fopen(writein,"w");
+  if (out == NULL){
+      if(in){
+        fclose(in);
+        return 2;}}
+
+  unsigned char el;
   unsigned char buf1[8];
   int count = 0;
   bool flag = true;
@@ -69,11 +76,18 @@ return 1;}
 
 
 int DeCompress(char *readthis , char*writein){
-  FILE *in= fopen(readthis,"r");
-  FILE*out  = fopen(writein,"w");
-if (in==NULL || out == NULL){
+ if (readthis == NULL || writein == NULL){return 2;}
+
+FILE*in = fopen(readthis,"r");
+if (in == NULL){
       return 2;}
-  char el;
+
+FILE*out = fopen(writein,"w");
+  if (out == NULL){
+      if(in){
+        fclose(in);
+        return 2;}}
+  unsigned char el;
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
