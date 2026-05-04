@@ -118,7 +118,7 @@ return 1;}
 int main()
 {
 
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   int result = Compress(ptr,ptr2);
   if(result ==1){
