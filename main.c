@@ -16,7 +16,16 @@ FILE*out = fopen(writein,"w");
       if(in){
         fclose(in);
         return 2;}}
-  unsigned char mark = '~';
+
+  fseek(in, 0, SEEK_END);
+  long sz = ftell(in);
+  fseek(in, 0, SEEK_SET);
+
+  if (sz > 0 && (sz%8)==7){
+        fprintf(out,"7\n");
+}
+
+
   unsigned char el;
   unsigned char buf1[8];
   int count = 0;
@@ -51,15 +60,7 @@ FILE*out = fopen(writein,"w");
 }
 
   if (count  > 0){
-    flag = false;
-    if (count == 7){
-        buf1[7] = mark;
-        for(int i =0; i< 7;i++){
-        result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
-        if(fprintf(out, "%c",result)<0){
-            return 3;}
-            }}
-    else{
+    flag = false;{
     for(int i=0 ; i < count; i++){
       flag = false;
       if((fprintf(out, "%c",buf1[i]))<0){
@@ -100,7 +101,6 @@ FILE*out = fopen(writein,"w");
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
-  unsigned char mark = '~';
 
   while (fscanf(in,"%c",&el)!= -1){
       buf1[count] = el;
@@ -112,12 +112,6 @@ FILE*out = fopen(writein,"w");
                 res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
                 res[i+1] = buf1[i] & ~(mask << 7);
                 i++;}
-          if (res[7]== mark){
-              for(i = 0;i<7; i++){
-                  if(fprintf(out,"%c",res[i])<0){
-                      return 3;}}}
-
-          else{
 
 
           for(i = 0; i < 8; i++){
@@ -126,7 +120,7 @@ FILE*out = fopen(writein,"w");
                       return 3;} }}}
           count = 0;
         }
-    }
+
 
   if (count  > 0){
     for(int i=0 ; i < count; i++){
