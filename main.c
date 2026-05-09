@@ -111,10 +111,12 @@ FILE*out = fopen(writein,"w");
   long razmer;
   long sz = ftell(in);
   if (hvost7){
-    razmer = sz-9;
+    razmer = sz-7;
+    sz = 2;
     fseek(in,2,SEEK_SET);
 }
   else{razmer= (sz/7)*7;
+  sz = 0;
   fseek(in, 0, SEEK_SET);}
 
 
@@ -124,6 +126,7 @@ FILE*out = fopen(writein,"w");
   unsigned char mask = 1;
 
   while (sz < razmer && fscanf(in,"%c",&el)!= -1){
+      sz++;
       buf1[count] = el;
       count++;
       if (count == 7){
@@ -137,9 +140,9 @@ FILE*out = fopen(writein,"w");
 
           for(i = 0; i < 8; i++){
                 if (fprintf(out,"%c",res[i])<0){
-                      return 3;} }}
+                      return 3;} }
           count = 0;
-        }
+        }}
 
 
   if (count  > 0){
@@ -164,10 +167,10 @@ int main()
 {
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   int result = Compress(ptr,ptr2);
