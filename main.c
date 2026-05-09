@@ -97,12 +97,33 @@ FILE*out = fopen(writein,"w");
       if(in){
         fclose(in);
         return 2;}}
+  unsigned char f1,f2;
+  bool hvost7 = false;
+  if (fscanf(in, "%c", &f1) == 1 && fscanf(in, "%c", &f2) == 1){
+     if (f1== '7' && f2=='\n'){
+          hvost7=true;
+} // хвост есть
+     else{
+        fseek(in,0,SEEK_SET);}} // хвоста нет
+  else{
+    fseek(in,0,SEEK_SET);}
+  fseek(in,0,SEEK_END);
+  long razmer;
+  long sz = ftell(in);
+  if (hvost7){
+    razmer = sz-9;
+    fseek(in,2,SEEK_SET);
+}
+  else{razmer= (sz/7)*7;
+  fseek(in, 0, SEEK_SET);}
+
+
   unsigned char el;
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
 
-  while (fscanf(in,"%c",&el)!= -1){
+  while (sz < razmer && fscanf(in,"%c",&el)!= -1){
       buf1[count] = el;
       count++;
       if (count == 7){
@@ -115,9 +136,8 @@ FILE*out = fopen(writein,"w");
 
 
           for(i = 0; i < 8; i++){
-                if (!(i == 0 && res[i] == 0)){
                 if (fprintf(out,"%c",res[i])<0){
-                      return 3;} }}}
+                      return 3;} }}
           count = 0;
         }
 
