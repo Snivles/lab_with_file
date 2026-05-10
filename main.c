@@ -104,20 +104,7 @@ FILE*out = fopen(writein,"w");
           hvost7=true;
 } // хвост есть
      else{
-        fseek(in,0,SEEK_SET);}} // хвоста нет
-  else{
-    fseek(in,0,SEEK_SET);}
-  fseek(in,0,SEEK_END);
-  long razmer;
-  long sz = ftell(in);
-  if (hvost7){
-    razmer = sz-7;
-    sz = 2;
-    fseek(in,2,SEEK_SET);
-}
-  else{razmer= (sz/7)*7;
-  sz = 0;
-  fseek(in, 0, SEEK_SET);}
+        fseek(in,0,SEEK_SET);}}
 
 
   unsigned char el;
@@ -125,11 +112,29 @@ FILE*out = fopen(writein,"w");
   int count = 0;
   unsigned char mask = 1;
 
-  while (sz < razmer && fscanf(in,"%c",&el)!= -1){
-      sz++;
+  while (fscanf(in,"%c",&el)!= -1){
       buf1[count] = el;
       count++;
       if (count == 7){
+        if (hvost7){
+          unsigned char cheak;
+          if (fscanf(in,"%c",&cheak)==1){
+          unsigned char res[8] = {0};
+          int i = 0;
+          while (i < 7){
+                res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
+                res[i+1] = buf1[i] & ~(mask << 7);
+                i++;}
+
+
+          for(i = 0; i < 8; i++){
+                if (fprintf(out,"%c",res[i])<0){
+                      return 3;} }
+
+              buf1[0] = cheak;
+              count = 1;}
+}
+      else{
           unsigned char res[8] = {0};
           int i = 0;
           while (i < 7){
@@ -142,7 +147,7 @@ FILE*out = fopen(writein,"w");
                 if (fprintf(out,"%c",res[i])<0){
                       return 3;} }
           count = 0;
-        }}
+        }}}
 
 
   if (count  > 0){
@@ -165,13 +170,21 @@ return 1;}
 
 int main()
 {
+// FILE *in = fopen("/Users/fliruden/vuz/lab_with_file/file.txt", "wb");
+//     int i = 0;
+//     int j = 0;
+//     while (j < 7){
+//         fprintf(in, "%c", i);
+//         j++;
+//     }
+//     fclose(in);
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   int result = Compress(ptr,ptr2);
   if(result ==1){
