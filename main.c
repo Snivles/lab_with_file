@@ -17,21 +17,17 @@ FILE*out = fopen(writein,"w");
         fclose(in);
         return 2;}}
 
-  fseek(in, 0, SEEK_END);
-  long sz = ftell(in);
-  fseek(in, 0, SEEK_SET);
-
-  if (sz > 0 && (sz%8)==7){
-        fprintf(out,"7\n");
-}
-
 
   unsigned char el;
   unsigned char buf1[8];
   int count = 0;
+  int i =0;
   bool flag = true;
 
   unsigned char result;
+  if (fprintf(out,"0\n") <0){return 3;}
+
+
 
   while (fscanf(in,"%c",&el)!= -1)
   {
@@ -47,7 +43,7 @@ FILE*out = fopen(writein,"w");
 
     count++;
     if(count == 8){
-      int i = 0;
+      i = 0;
       while (i < 7){
         result = (buf1[i+1] | ( (buf1[0] >> i)&1 )<<7);
         if(fprintf(out, "%c",result)<0){
@@ -65,9 +61,14 @@ FILE*out = fopen(writein,"w");
       flag = false;
       if((fprintf(out, "%c",buf1[i]))<0){
           return 3;}}
-
+  fseek(out, 0, SEEK_SET);
+  if (count == 7){
+      if (fprintf(out,"7")<0){return 3;}
+}
   }
 }
+
+
 
   if (flag == true){
         fclose(in);
@@ -102,15 +103,14 @@ FILE*out = fopen(writein,"w");
   if (fscanf(in, "%c", &f1) == 1 && fscanf(in, "%c", &f2) == 1){
      if (f1== '7' && f2=='\n'){
           hvost7=true;
-} // хвост есть
-     else{
-        fseek(in,0,SEEK_SET);}}
+} }// хвост есть
 
 
   unsigned char el;
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
+  int i = 0;
 
   while (fscanf(in,"%c",&el)!= -1){
       buf1[count] = el;
@@ -120,7 +120,7 @@ FILE*out = fopen(writein,"w");
           unsigned char cheak;
           if (fscanf(in,"%c",&cheak)==1){
           unsigned char res[8] = {0};
-          int i = 0;
+          i = 0;
           while (i < 7){
                 res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
                 res[i+1] = buf1[i] & ~(mask << 7);
@@ -136,7 +136,7 @@ FILE*out = fopen(writein,"w");
 }
       else{
           unsigned char res[8] = {0};
-          int i = 0;
+          i = 0;
           while (i < 7){
                 res[0] = res[0] | ((buf1[i] >> 7) & 1) << i;
                 res[i+1] = buf1[i] & ~(mask << 7);
@@ -170,22 +170,23 @@ return 1;}
 
 int main()
 {
-// FILE *in = fopen("/Users/fliruden/vuz/lab_with_file/file.txt", "wb");
+// FILE *in = fopen("/Users/fliruden/vuz/lab_with_file/ascii.txt", "wb");
 //     int i = 0;
 //     int j = 0;
-//     while (j < 7){
-//         fprintf(in, "%c", i);
+//     while (j < 128){
+//         fprintf(in, "%c", j);
 //         j++;
 //     }
 //     fclose(in);
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно, ошибка
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
+  char ptr3[1000] = ("/Users/fliruden/vuz/lab_with_file/result.txt");
   int result = Compress(ptr,ptr2);
   if(result ==1){
     printf("Correct Compress");
@@ -195,7 +196,7 @@ int main()
   printf("\n");
 
 
-  result = DeCompress(ptr2,ptr);
+  result = DeCompress(ptr2,ptr3);
   if (result == 1){
     printf("Correct DeCompress");
 }
