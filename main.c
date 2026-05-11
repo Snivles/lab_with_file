@@ -103,7 +103,7 @@ FILE*out = fopen(writein,"w");
   if (fscanf(in, "%c", &f1) == 1 && fscanf(in, "%c", &f2) == 1){
      if (f1== '7' && f2=='\n'){
           hvost7=true;
-} }// хвост есть
+} }
 
 
   unsigned char el;
@@ -180,11 +180,11 @@ int main()
 //         j++;
 //     }
 //     fclose(in);
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt"); // да
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt"); // да
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
-  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/bigtext.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/ascii.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt");
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
   char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
