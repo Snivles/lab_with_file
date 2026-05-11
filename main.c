@@ -170,11 +170,13 @@ return 1;}
 
 int main()
 {
-// FILE *in = fopen("/Users/fliruden/vuz/lab_with_file/ascii.txt", "wb");
+// FILE *in = fopen("/Users/fliruden/vuz/lab_with_file/nullwithletters.txt", "wb");
 //     int i = 0;
 //     int j = 0;
-//     while (j < 128){
-//         fprintf(in, "%c", j);
+//     unsigned char simvol = 98;
+//     while (j < 3){
+//         fprintf(in, "%c", i);
+//         for(int z=0; z < 7;z++){fprintf(in,"%c",simvol);}
 //         j++;
 //     }
 //     fclose(in);
@@ -183,8 +185,10 @@ int main()
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt"); // верно
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/kirill.txt"); // верно, ошибка
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/pystota.txt"); // пустой файл(без символов) верно
-  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/fifteen.txt");
   //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/file.txt");
+  char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/sixteen.txt");
+  //char ptr[1000]= ("/Users/fliruden/vuz/lab_with_file/nullwithletters.txt");
   char ptr2[1000] = ("/Users/fliruden/vuz/lab_with_file/second.txt");
   char ptr3[1000] = ("/Users/fliruden/vuz/lab_with_file/result.txt");
   int result = Compress(ptr,ptr2);
