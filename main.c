@@ -110,6 +110,7 @@ FILE*out = fopen(writein,"w");
   unsigned char buf1[7];
   int count = 0;
   unsigned char mask = 1;
+  unsigned char cheak;
   int i = 0;
 
   while (fscanf(in,"%c",&el)!= -1){
@@ -117,7 +118,7 @@ FILE*out = fopen(writein,"w");
       count++;
       if (count == 7){
         if (hvost7){
-          unsigned char cheak;
+          cheak = '0';
           if (fscanf(in,"%c",&cheak)==1){
           unsigned char res[8] = {0};
           i = 0;
